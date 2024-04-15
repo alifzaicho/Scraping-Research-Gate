@@ -25,6 +25,7 @@ def scrape_institution_members(institution: str):
                 profile_photo = member.css(".nova-legacy-l-flex__item img::attr(src)").get()
                 department = member.css(".nova-legacy-v-person-list-item__stack-item:nth-child(2) span::text").get()
                 desciplines = member.css("span .nova-legacy-e-link::text").getall()
+                print(name,"\n", department)
                 
                 institution_memebers.append({
                     "name": name,

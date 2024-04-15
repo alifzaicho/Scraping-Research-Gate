@@ -25,6 +25,7 @@ def scrape_researchgate_publications(query: str):
                 publication_isbn = publication.css(".nova-legacy-v-publication-item__meta-data-item:nth-child(3) span").xpath("normalize-space()").get()
                 authors = publication.css(".nova-legacy-v-person-inline-item__fullname::text").getall()
                 source_link = f'https://www.researchgate.net{publication.css(".nova-legacy-v-publication-item__preview-source .nova-legacy-e-link--theme-bare::attr(href)").get()}'
+                print(title,"\n",title_link,"\n",publication_type,"\n",publication_date,"\n",publication_doi,"\n",publication_isbn,"\n",authors,"\n",source_link,"\n","\n",)
 
                 publications.append({
                     "title": title,
@@ -34,6 +35,7 @@ def scrape_researchgate_publications(query: str):
                     "publication_date": publication_date,
                     "publication_doi": publication_doi,
                     "publication_isbn": publication_isbn,
+                    
                     "authors": authors
                 })
 
