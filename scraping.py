@@ -1,31 +1,36 @@
-import requests
+# importing necessary packages
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import *
+import csv
+import json
 
-from bs4 import BeautifulSoup
-import pandas as pd
-import time
-
-# URL of the website to scrape
-url = "https://www.imdb.com/chart/top"
-
-# Send an HTTP GET request to the website
-response = requests.get(url)
-
-# Parse the HTML code using BeautifulSoup
-soup = BeautifulSoup(response.content, 'html.parser')
-
-# Extract the relevant information from the HTML code
-movies = []
-for row in soup.select('tbody.lister-list tr'):
-    title = row.find('td', class_='titleColumn').find('a').get_text()
-    year = row.find('td', class_='titleColumn').find('span', class_='secondaryInfo').get_text()[1:-1]
-    rating = row.find('td', class_='ratingColumn imdbRating').find('strong').get_text()
-    movies.append([title, year, rating])
-    # Store the information in a pandas dataframe
-
-df = pd.DataFrame(movies, columns=['Title', 'Year', 'Rating'])
-
-# Add a delay between requests to avoid overwhelming the website with requests
-time.sleep(1)
-
-# Export the data to a CSV file
-df.to_csv('top-rated-movies.csv', index=False)
+# for holding the resultant list
+element_list = []
+ 
+for page in range(1, 3, 1):
+ 
+    page_url = "https://webscraper.io/test-sites/e-commerce/static/computers/laptops?page=" + str(page)
+    driver = webdriver.Chrome()
+    driver.get(page_url)
+    title = driver.find_elements(By.CLASS_NAME, "title")
+    price = driver.find_elements(By.CLASS_NAME, "price")
+    description = driver.find_elements(By.CLASS_NAME, "description")
+    rating = driver.find_elements(By.CLASS_NAME, "ratings")
+ 
+    for i in range(len(title)):
+        element_list.append([title[i].text, price[i].text, description[i].text, rating[i].text])
+        print(len(title))
+        print(title)
+ 
+print(element_list)
+ 
+#closing the driver
+driver.close()
+        
+file = open('movies.json', mode='w', encoding='utf-8')
+file.write(json.dumps(element_list))
+ 
+writer = csv.writer(open("movies.csv", 'w'))
+for movie in element_list:
+    writer.writerow(movie.values())
