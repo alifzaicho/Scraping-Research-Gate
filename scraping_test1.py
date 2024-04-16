@@ -64,7 +64,6 @@
 
 from playwright.sync_api import sync_playwright
 import csv
-import json
 import pandas as pd
 
 element_list = []
@@ -94,16 +93,10 @@ def main():
 if __name__ == '__main__':
 	main()
 
-# file = open('quotes.json', mode='w', encoding='utf-8')
-# file.write(json.dumps(element_list))	
-# writer = csv.writer(open("quotes.csv", 'w'))
-# for quotes in element_list:
-#     writer.writerow(quotes)
-
 with open("quotes.csv", 'w') as csvfile:
 	csvwriter = csv.writer(csvfile)
 	csvwriter.writerow(head_element)
 	csvwriter.writerows(element_list)
 
 df = pd.read_csv('quotes.csv', encoding='unicode_escape')
-print(df) 
+print(df.head(5)) 
